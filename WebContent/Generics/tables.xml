@@ -1,0 +1,165 @@
+<scheme>
+    <table name="CompanyCategory" pk="CompanyCategoryId">
+        <params>
+            <item name="CompanyCategoryId" type="INT"></item>
+            <item name="CompanyCategoryDescription" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="Company" pk="CompanyId">
+        <params>
+            <item name="CompanyId" type="INT"></item>
+            <item name="CompanyName" type="VARCHAR"></item>
+            <item name="URL" type="VARCHAR"></item>
+            <item name="YearFounded" type="VARCHAR"></item>
+            <item name="City" type="VARCHAR"></item>
+            <item name="State" type="VARCHAR"></item>
+            <item name="Country" type="VARCHAR"></item>
+            <item name="ZipCode" type="VARCHAR"></item>
+            <item name="CompanyType" type="VARCHAR"></item>
+            <item name="Description" type="TEXT"></item>
+            <item name="CompanyCategoryId" type="INT"></item>
+        </params>
+    </table>
+
+    <table name="CompanyImage" pk="ImageId">
+        <params>
+            <item name="ImageId" type="INT"></item>
+            <item name="CompanyId" type="INT"></item>
+        </params>
+    </table>
+
+    <table name="UserType" pk="UserTypeId">
+        <params>
+            <item name="UserTypeId" type="CHAR"></item>
+            <item name="UserTypeName" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="UserAccount" pk="UserAccountId">
+        <params>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="UserTypeId" type="CHAR"></item>
+            <item name="FirstName" type="VARCHAR"></item>
+            <item name="LastName" type="VARCHAR"></item>
+            <item name="Email" type="VARCHAR"></item>
+            <item name="Password" type="VARCHAR"></item>
+            <item name="DateOfBirth" type="DATE"></item>
+            <item name="Gender" type="CHAR"></item>
+            <item name="ContactNumber" type="VARCHAR"></item>
+            <item name="RegistrationDate" type="DATE"></item>
+        </params>
+    </table>
+
+    <table name="UserLog" pk="UserAccountId">
+        <params>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="LastLoginDate" type="DATE"></item>
+            <item name="LastJobApplyDate" type="DATE"></item>
+            <item name="LastJobPostDate" type="DATE"></item>
+        </params>
+    </table>
+
+    <table name="SeekerProfile" pk="UserAccountId">
+        <params>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="Industry" type="VARCHAR"></item>
+            <item name="CurrentSalary" type="VARCHAR"></item>
+            <item name="SalaryUnit" type="VARCHAR"></item>
+            <item name="Resume" type="TEXT"></item>
+        </params>
+    </table>
+
+    <table name="EducationDetail" pk="UserAccountId">
+        <params>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="CertificateDegree" type="VARCHAR"></item>
+            <item name="Major" type="VARCHAR"></item>
+            <item name="University" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="ExperienceDetail" pk="UserAccountId">
+        <params>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="IsWorking" type="CHAR"></item>
+            <item name="StartDate" type="DATE"></item>
+            <item name="EndDate" type="DATE"></item>
+            <item name="JobTitle" type="VARCHAR"></item>
+            <item name="FullTime" type="CHAR"></item>
+            <item name="CompanyName" type="VARCHAR"></item>
+            <item name="WorkSiteCity" type="VARCHAR"></item>
+            <item name="WorkSiteCounty" type="VARCHAR"></item>
+            <item name="WorkSiteState" type="VARCHAR"></item>
+            <item name="WorkSitePostCode" type="VARCHAR"></item>
+            <item name="Description" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="WorkType" pk="WorkType">
+        <params>
+            <item name="WorkType" type="INT"></item>
+            <item name="Detail" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="JobLocation" pk="JobLocationId">
+        <params>
+            <item name="JobLocationId" type="INT"></item>
+            <item name="StreetAddress" type="VARCHAR"></item>
+            <item name="City" type="VARCHAR"></item>
+            <item name="State" type="VARCHAR"></item>
+            <item name="Country" type="VARCHAR"></item>
+            <item name="Zip" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="Job" pk="JobId">
+        <params>
+            <item name="JobId" type="INT"></item>
+            <item name="CompanyId" type="INT"></item>
+            <item name="MainJobTitle" type="VARCHAR"></item>
+            <item name="DateAdvertised" type="DATE"></item>
+            <item name="JobLocationId" type="INT"></item>
+            <item name="WorkType" type="INT"></item>
+            <item name="Classification" type="VARCHAR"></item>
+            <item name="JobDescription" type="TEXT"></item>
+            <item name="PageURL" type="TEXT"></item>
+            <item name="UserAccountId" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="JobApplyActivity" pk="JobApplyActivityId">
+        <params>
+            <item name="JobApplyActivityId" type="INT"></item>
+            <item name="JobId" type="INT"></item>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="ApplyDate" type="DATE"></item>
+        </params>
+    </table>
+
+    <table name="SkillSet" pk="SkillSetId">
+        <params>
+            <item name="SkillSetId" type="INT"></item>
+            <item name="SkillSetName" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="SeekerSkillSet" pk="SeekerSkillSetId">
+        <params>
+            <item name="SeekerSkillSetId" type="INT"></item>
+            <item name="UserAccountId" type="VARCHAR"></item>
+            <item name="SkillSetId" type="INT"></item>
+            <item name="SkillLevel" type="VARCHAR"></item>
+        </params>
+    </table>
+
+    <table name="JobPostSkillSet" pk="JobPostSkillSetId">
+        <params>
+            <item name="JobPostSkillSetId" type="INT"></item>
+            <item name="JobId" type="INT"></item>
+            <item name="SkillSetId" type="INT"></item>
+            <item name="SkillLevel" type="VARCHAR"></item>
+        </params>
+    </table>
+</scheme>
