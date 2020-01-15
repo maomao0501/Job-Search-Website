@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Jing" created="Thu Nov 15 02:32:24 PST 2018" guiVersion="5.0.2" id="1542342251532" licenseCode="Unlicensed" name="employee" showComponentDetails="true">
+<Global>
+<Metadata id="Metadata2">
+<Record fieldDelimiter="," name="aggregated" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field delimiter="," name="Industry" type="string"/>
+<Field name="Wage" type="decimal"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata4">
+<Record fieldDelimiter="," name="aggregatedState" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field name="State" type="string"/>
+<Field format="excel:General" name="Number" type="integer"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata8">
+<Record fieldDelimiter="," name="Case" recordDelimiter="\n" type="delimited">
+<Field format="MM/dd/yy" name="Date" type="date"/>
+<Field name="CountSubmit" type="integer"/>
+<Field name="CountDecide" type="integer"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata10">
+<Record fieldDelimiter="," name="CaseDecide" recordDelimiter="\n" type="delimited">
+<Field format="MM/dd/yy" name="Date" type="date"/>
+<Field name="CountDecide" type="integer"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata9">
+<Record fieldDelimiter="," name="CaseSubmit" recordDelimiter="\n" type="delimited">
+<Field format="MM/dd/yy" name="Date" type="date"/>
+<Field name="CountSubmit" type="integer"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata3">
+<Record fieldDelimiter="," name="EmployeesbyState" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field name="STATE" size="255" type="string"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata0">
+<Record fieldDelimiter="," name="employeescut" previewAttachment="${DATAIN_DIR}/employeescut.csv" previewAttachmentCharset="UTF-8" quoteChar="&quot;" quotedStrings="true" recordDelimiter="\r\n" skipSourceRows="1" type="delimited">
+<Field name="ID" type="string"/>
+<Field name="CASE_STATUS" type="string"/>
+<Field delimiter="," format="MM/dd/yy" name="CASE_SUBMITTED" type="date"/>
+<Field format="MM/dd/yy" name="DECISION_DATE" type="date"/>
+<Field name="VISA_CLASS" type="string"/>
+<Field name="EMPLOYER_NAME" type="string"/>
+<Field name="JOB_TITLE" type="string"/>
+<Field name="INDUSTRY" type="string"/>
+<Field name="WAGE" scale="2" type="decimal"/>
+<Field name="WAGE_UNIT" type="string"/>
+<Field eofAsDelimiter="true" name="STATE" type="string"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata5">
+<Record fieldDelimiter="," name="H1B" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field format="excel:M/D/YY" name="CASE_SUBMITTED" size="10" type="date"/>
+<Field format="excel:M/D/YY" name="DECISION_DATE" size="10" type="date"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata7">
+<Record fieldDelimiter="," name="H1B_DEC" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field format="MM/dd/yy" name="DECISION_DATE" size="10" type="date"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata6">
+<Record fieldDelimiter="," name="H1B_SUB" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field format="MM/dd/yy" name="CASE_SUBMITTED" size="10" type="date"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata1">
+<Record fieldDelimiter="," name="WageByIndustry" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field name="INDUSTRY" size="255" type="string"/>
+<Field length="10" name="WAGE" scale="0" type="decimal"/>
+<Field name="WAGE_UNIT" size="255" type="string"/>
+</Record>
+</Metadata>
+<Connection dbDriver="com.mysql.jdbc.Driver" dbURL="jdbc:mysql://localhost:3306/JobApplication" driverLibrary="${PROJECT}/mysql-connector-java-8.0.13.jar" id="JDBC0" jdbcSpecific="MYSQL" name="job" password="wangjing930417" type="JDBC" user="root"/>
+<GraphParameters>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Dictionary/>
+</Global>
+<Phase number="0">
+<Node dbConnection="JDBC0" dbTable="Employees" fieldMap="$ID:=ID;$CASE_STATUS:=CASE_STATUS;$CASE_SUBMITTED:=CASE_SUBMITTED;$DECISION_DATE:=DECISION_DATE;$VISA_CLASS:=VISA_CLASS;$EMPLOYER_NAME:=EMPLOYER_NAME;$JOB_TITLE:=JOB_TITLE;$INDUSTRY:=INDUSTRY;$WAGE:=WAGE;$WAGE_UNIT:=WAGE_UNIT;$STATE:=STATE;" guiName="DBOutputTable" guiX="328" guiY="16" id="DBOUTPUT_TABLE" type="DB_OUTPUT_TABLE"/>
+<Node dataPolicy="lenient" fileURL="${DATAIN_DIR}/employeescut.csv" guiName="UniversalDataReader" guiX="72" guiY="16" id="UNIVERSAL_DATA_READER" quoteCharacter="&quot;" quotedStrings="true" skipFirstLine="true" trim="true" type="DATA_READER"/>
+<Edge fromNode="UNIVERSAL_DATA_READER:0" guiBendpoints="" guiRouter="Manhattan" id="Edge1" inPort="Port 0 (in)" metadata="Metadata0" outPort="Port 0 (output)" toNode="DBOUTPUT_TABLE:0"/>
+</Phase>
+<Phase number="1">
+<Node aggregateKey="INDUSTRY" guiName="Aggregate" guiX="417" guiY="134" id="AGGREGATE" mapping="$Industry:=$INDUSTRY;$Wage:=avg($WAGE);" sorted="false" type="AGGREGATE"/>
+<Node dbConnection="JDBC0" guiName="DBInputTable" guiX="72" guiY="134" id="DBINPUT_TABLE" type="DB_INPUT_TABLE">
+<attr name="sqlQuery"><![CDATA[SELECT INDUSTRY, WAGE, WAGE_UNIT 
+FROM JobApplication.Employees
+ORDER BY INDUSTRY]]></attr>
+</Node>
+<Node guiName="ExtSort" guiX="578" guiY="134" id="EXT_SORT" sortKey="Wage(a)" sortOrder="descending" type="EXT_SORT"/>
+<Node guiName="Filter" guiX="244" guiY="134" id="FILTER" type="EXT_FILTER">
+<attr name="filterExpression"><![CDATA[//#CTL2
+$in.0.WAGE_UNIT == "Year";]]></attr>
+</Node>
+<Node existingSheetsActions="DO_NOTHING" fileURL="${DATAOUT_DIR}/ForeignEmployees.xlsx" guiName="SpreadsheetDataWriter" guiX="739" guiY="134" id="SPREADSHEET_DATA_WRITER" sheet="Sheet0" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>VERTICAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups/>
+</mapping>
+]]></attr>
+</Node>
+<Edge fromNode="AGGREGATE:0" guiBendpoints="" guiRouter="Manhattan" id="Edge6" inPort="Port 0 (in)" metadata="Metadata2" outPort="Port 0 (out)" toNode="EXT_SORT:0"/>
+<Edge fromNode="DBINPUT_TABLE:0" guiBendpoints="" guiRouter="Manhattan" id="Edge2" inPort="Port 0 (in)" metadata="Metadata1" outPort="Port 0 (out)" toNode="FILTER:0"/>
+<Edge fromNode="EXT_SORT:0" guiBendpoints="" guiRouter="Manhattan" id="Edge9" inPort="Port 0 (input)" outPort="Port 0 (out)" toNode="SPREADSHEET_DATA_WRITER:0"/>
+<Edge fromNode="FILTER:0" guiBendpoints="" guiRouter="Manhattan" id="Edge5" inPort="Port 0 (in)" outPort="Port 0 (accepted)" toNode="AGGREGATE:0"/>
+</Phase>
+<Phase number="2">
+<Node aggregateKey="STATE" guiName="Aggregate" guiX="417" guiY="229" id="AGGREGATE1" mapping="$State:=$STATE;$Number:=count();" type="AGGREGATE"/>
+<Node dbConnection="JDBC0" guiName="DBInputTable" guiX="72" guiY="229" id="DBINPUT_TABLE1" type="DB_INPUT_TABLE">
+<attr name="sqlQuery"><![CDATA[SELECT STATE 
+FROM JobApplication.Employees
+ORDER BY STATE]]></attr>
+</Node>
+<Node guiName="Filter" guiX="244" guiY="229" id="FILTER1" type="EXT_FILTER">
+<attr name="filterExpression"><![CDATA[//#CTL2
+$in.0.STATE != null;]]></attr>
+</Node>
+<Node existingSheetsActions="DO_NOTHING" fileURL="${DATAOUT_DIR}/ForeignEmployees.xlsx" guiName="SpreadsheetDataWriter" guiX="578" guiY="229" id="SPREADSHEET_DATA_WRITER1" sheet="Sheet1" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>VERTICAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups>
+        <headerGroup skip="1">
+            <cloverField>State</cloverField>
+            <headerRanges>
+                <headerRange begin="A1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Number</cloverField>
+            <headerRanges>
+                <headerRange begin="B1"/>
+            </headerRanges>
+        </headerGroup>
+    </headerGroups>
+</mapping>
+]]></attr>
+</Node>
+<Edge fromNode="AGGREGATE1:0" guiBendpoints="" guiRouter="Manhattan" id="Edge12" inPort="Port 0 (input)" metadata="Metadata4" outPort="Port 0 (out)" toNode="SPREADSHEET_DATA_WRITER1:0"/>
+<Edge fromNode="DBINPUT_TABLE1:0" guiBendpoints="" guiRouter="Manhattan" id="Edge10" inPort="Port 0 (in)" metadata="Metadata3" outPort="Port 0 (out)" toNode="FILTER1:0"/>
+<Edge fromNode="FILTER1:0" guiBendpoints="" guiRouter="Manhattan" id="Edge13" inPort="Port 0 (in)" outPort="Port 0 (accepted)" toNode="AGGREGATE1:0"/>
+</Phase>
+<Phase number="3">
+<Node aggregateKey="CASE_SUBMITTED" guiName="Aggregate" guiX="244" guiY="326" id="AGGREGATE2" mapping="$Date:=$CASE_SUBMITTED;$CountSubmit:=count();" type="AGGREGATE"/>
+<Node aggregateKey="DECISION_DATE" guiName="Aggregate" guiX="244" guiY="414" id="AGGREGATE3" mapping="$Date:=$DECISION_DATE;$CountDecide:=count();" type="AGGREGATE"/>
+<Node dataPolicy="lenient" dbConnection="JDBC0" guiName="DBInputTable" guiX="72" guiY="326" id="DBINPUT_TABLE2" type="DB_INPUT_TABLE">
+<attr name="sqlQuery"><![CDATA[SELECT CASE_SUBMITTED
+FROM JobApplication.Employees 
+Order by CASE_SUBMITTED;
+]]></attr>
+</Node>
+<Node dataPolicy="lenient" dbConnection="JDBC0" guiName="DBInputTable" guiX="72" guiY="414" id="DBINPUT_TABLE3" type="DB_INPUT_TABLE">
+<attr name="sqlQuery"><![CDATA[Select DECISION_DATE
+From JobApplication.Employees 
+Order by DECISION_DATE
+]]></attr>
+</Node>
+<Node guiName="ExtHashJoin" guiX="407" guiY="362" id="EXT_HASH_JOIN" joinKey="$Date=$Date" joinType="inner" type="EXT_HASH_JOIN">
+<attr name="transform"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.Date = $in.0.Date;
+	$out.0.CountSubmit = $in.0.CountSubmit;
+	$out.0.CountDecide = $in.1.CountDecide;
+
+	return ALL;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Node existingSheetsActions="DO_NOTHING" fileURL="${DATAOUT_DIR}/ForeignEmployees.xlsx" guiName="SpreadsheetDataWriter" guiX="578" guiY="362" id="SPREADSHEET_DATA_WRITER2" sheet="Sheet2" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>VERTICAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups>
+        <headerGroup skip="1">
+            <cloverField>Date</cloverField>
+            <headerRanges>
+                <headerRange begin="A1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>CountSubmit</cloverField>
+            <headerRanges>
+                <headerRange begin="B1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>CountDecide</cloverField>
+            <headerRanges>
+                <headerRange begin="C1"/>
+            </headerRanges>
+        </headerGroup>
+    </headerGroups>
+</mapping>
+]]></attr>
+</Node>
+<Edge fromNode="AGGREGATE2:0" guiBendpoints="" guiRouter="Manhattan" id="Edge7" inPort="Port 0 (driver)" metadata="Metadata9" outPort="Port 0 (out)" toNode="EXT_HASH_JOIN:0"/>
+<Edge fromNode="AGGREGATE3:0" guiBendpoints="" guiRouter="Manhattan" id="Edge8" inPort="Port 1 (slave)" metadata="Metadata10" outPort="Port 0 (out)" toNode="EXT_HASH_JOIN:1"/>
+<Edge fromNode="DBINPUT_TABLE2:0" guiBendpoints="" guiRouter="Manhattan" id="Edge3" inPort="Port 0 (in)" metadata="Metadata6" outPort="Port 0 (out)" toNode="AGGREGATE2:0"/>
+<Edge fromNode="DBINPUT_TABLE3:0" guiBendpoints="" guiRouter="Manhattan" id="Edge4" inPort="Port 0 (in)" metadata="Metadata7" outPort="Port 0 (out)" toNode="AGGREGATE3:0"/>
+<Edge fromNode="EXT_HASH_JOIN:0" guiBendpoints="" guiRouter="Manhattan" id="Edge11" inPort="Port 0 (input)" metadata="Metadata8" outPort="Port 0 (out)" toNode="SPREADSHEET_DATA_WRITER2:0"/>
+</Phase>
+</Graph>

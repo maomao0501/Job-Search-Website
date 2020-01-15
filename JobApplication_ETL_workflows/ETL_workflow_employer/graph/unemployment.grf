@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Jing" created="Fri Nov 16 20:51:02 PST 2018" guiVersion="5.0.2" id="1542441232887" licenseCode="CLP1DNORTH26652598EX" name="unemployments" showComponentDetails="true">
+<Global>
+<Metadata id="Metadata1">
+<Record fieldDelimiter="," name="month" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field name="Year" size="255" type="integer"/>
+<Field name="MonthCount" type="string"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata2">
+<Record fieldDelimiter="," name="state" previewAttachmentCharset="UTF-8" recordDelimiter="\n" type="delimited">
+<Field name="Year" size="255" type="integer"/>
+<Field name="StateCount" type="string"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata0">
+<Record fieldDelimiter="," name="unemployments" previewAttachment="${DATAIN_DIR}/unemployments.csv" previewAttachmentCharset="UTF-8" quoteChar="both" quotedStrings="false" recordDelimiter="\n" skipSourceRows="1" type="delimited">
+<Field name="Year" type="integer"/>
+<Field name="Month" type="string"/>
+<Field name="State" type="string"/>
+<Field name="County" type="string"/>
+<Field eofAsDelimiter="true" name="Rate" scale="1" type="decimal"/>
+</Record>
+</Metadata>
+<Connection dbDriver="com.mysql.jdbc.Driver" dbURL="jdbc:mysql://localhost:3306/JobApplication" driverLibrary="/Users/haogao/maomao/mysql-connector-java-8.0.13/mysql-connector-java-8.0.13.jar" id="JDBC0" jdbcSpecific="MYSQL" name="NewConnection" password="19921209" type="JDBC" user="root"/>
+<GraphParameters>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Dictionary/>
+</Global>
+<Phase number="0">
+<Node dbConnection="JDBC0" dbTable="Unemployment" fieldMap="$Year:=Year;$Month:=MonthCount;$State:=StateCount;" guiName="DBOutputTable" guiX="396" guiY="58" id="DBOUTPUT_TABLE" type="DB_OUTPUT_TABLE"/>
+<Node dataPolicy="lenient" fileURL="${DATAIN_DIR}/unemployments.csv" guiName="UniversalDataReader" guiX="30" guiY="58" id="UNIVERSAL_DATA_READER" numRecords="100000" skipFirstLine="true" trim="true" type="DATA_READER"/>
+<Edge fromNode="UNIVERSAL_DATA_READER:0" guiBendpoints="" guiRouter="Manhattan" id="Edge2" inPort="Port 0 (in)" metadata="Metadata0" outPort="Port 0 (output)" toNode="DBOUTPUT_TABLE:0"/>
+</Phase>
+<Phase number="1">
+<Node dbConnection="JDBC0" guiName="DBInputTable" guiX="40" guiY="218" id="DBINPUT_TABLE" type="DB_INPUT_TABLE">
+<attr name="sqlQuery"><![CDATA[SELECT Year, MonthCount
+FROM JobApplication.Unemployment
+WHERE MonthCount = 'May' or MonthCount = 'February' 
+and Year = '2015'
+LIMIT 50000
+]]></attr>
+</Node>
+<Node existingSheetsActions="CLEAR_SHEETS" fileURL="${DATAOUT_DIR}/unemployments1.xlsx" guiName="SpreadsheetDataWriter" guiX="388" guiY="218" id="SPREADSHEET_DATA_WRITER" sheet="Sheet0" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>VERTICAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups>
+        <headerGroup skip="1">
+            <cloverField>Year</cloverField>
+            <headerRanges>
+                <headerRange begin="A1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>MonthCount</cloverField>
+            <headerRanges>
+                <headerRange begin="B1"/>
+            </headerRanges>
+        </headerGroup>
+    </headerGroups>
+</mapping>
+]]></attr>
+</Node>
+<Edge fromNode="DBINPUT_TABLE:0" guiBendpoints="" guiRouter="Manhattan" id="Edge5" inPort="Port 0 (input)" metadata="Metadata1" outPort="Port 0 (out)" toNode="SPREADSHEET_DATA_WRITER:0"/>
+</Phase>
+<Phase number="2">
+<Node dbConnection="JDBC0" guiName="DBInputTable" guiX="40" guiY="344" id="DBINPUT_TABLE1" type="DB_INPUT_TABLE">
+<attr name="sqlQuery"><![CDATA[SELECT Year, StateCount
+FROM JobApplication.Unemployment
+WHERE StateCount = 'California'
+LIMIT 50000
+]]></attr>
+</Node>
+<Node existingSheetsActions="CLEAR_SHEETS" fileURL="${DATAOUT_DIR}/unemployments1.xlsx" guiName="SpreadsheetDataWriter" guiX="388" guiY="344" id="SPREADSHEET_DATA_WRITER1" sheet="sheet1" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>VERTICAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups>
+        <headerGroup skip="1">
+            <cloverField>Year</cloverField>
+            <headerRanges>
+                <headerRange begin="A1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>StateCount</cloverField>
+            <headerRanges>
+                <headerRange begin="B1"/>
+            </headerRanges>
+        </headerGroup>
+    </headerGroups>
+</mapping>
+]]></attr>
+</Node>
+<Edge fromNode="DBINPUT_TABLE1:0" guiBendpoints="" guiRouter="Manhattan" id="Edge0" inPort="Port 0 (input)" metadata="Metadata2" outPort="Port 0 (out)" toNode="SPREADSHEET_DATA_WRITER1:0"/>
+</Phase>
+</Graph>
